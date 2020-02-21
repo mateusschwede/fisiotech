@@ -6,14 +6,19 @@
         $senha = strtolower($_POST['senha']);
 
         //No caso do Admin
-        if(($nome == "admin") && ($senha == "admin")) {header('location: admIndex.php');}
+        if(($nome == "admin") && ($senha == "admin")) {
+            $_SESSION['nome'] = $nome;
+            $_SESSION['senha'] = $senha;
+            header('location: admIndex.php');
+        }
 
         //No caso de Fisioterapeuta
         $r = $db->prepare('SELECT nome,senha FROM fisioterapeuta WHERE nome=:nome AND senha=:senha');
         $r->execute(array(':nome'=>$nome,':senha'=>$senha));
 
         if($r->rowCount() != 0) {
-            $_SESSION['usuario'][] = [$nome,$senha];
+            $_SESSION['nome'] = $nome;
+            $_SESSION['senha'] = $senha;
             header('location: fisioIndex.php');
         }
     }
