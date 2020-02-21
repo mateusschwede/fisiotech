@@ -3,7 +3,6 @@
     if($_SESSION['nome'] == null) {header('location: index.php');}
 ?>
 
-<div class="row">
     <?php require_once 'extras/menu.php' ?>
         <li class="nav-item active"><a class="nav-link" href="admIndex.php">Fisioterapeutas</a></li>
         <li class="nav-item"><a class="nav-link" href="admPacientes.php">Pacientes</a></li>
@@ -11,7 +10,6 @@
         </ul>
         </div>
     </nav>
-    </div>
     </div>
 </div>
 
@@ -49,7 +47,7 @@
                         ?>
 
                         <form action="admIndex.php" method="post">
-                            <input type="number" name="crefito" placeholder="Crefito" min="111111" max="999999">
+                            <input type="number" name="crefito" placeholder="Crefito" min="100000" max="999999">
                             <input type="text" name="nome" placeholder="Nome" maxlength="70">
                             <input type="text" name="senha" placeholder="Senha" minlength="5" maxlength="5">
                             <input type="submit" value="Cadastrar">
@@ -64,31 +62,45 @@
         <!-- Editar Fisioterapeuta -->
             <div class="card">
                 <div class="card-header" id="heading2">
-                    <h2 class="mb-0"><button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">Editar sessão</button></h2>
+                    <h2 class="mb-0"><button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">Editar fisioterapeuta</button></h2>
                 </div>
                 <div id="collapse2" class="collapse" aria-labelledby="heading2" data-parent="#accordionExample">
                     <div class="card-body">
-                        CONTEUDO AQUI
 
+                        <?php
+                            if( (!empty($_POST['crefito3'])) && (!empty($_POST['nCrefito'])) && (!empty($_POST['nNome'])) && (!empty($_POST['nSenha'])) ) {
+                                $crefito = $_POST['crefito3'];
+                                $novoCrefito = $_POST['nCrefito'];
+                                $nome = strtolower($_POST['nNome']);
+                                $senha = strtolower($_POST['nSenha']);
 
+                                //Novo crefito já existe
+                                $r = $db->prepare('SELECT crefito FROM fisioterapeuta WHERE crefito=:crefito');
+                                $r->execute(array(':crefito'=>$novoCrefito));
+                                if($r->rowCount() == 0) {
+                                    $r2 = $db->prepare('UPDATE fisioterapeuta SET crefito=:novoCrefito,nome=:nome,senha=:senha WHERE crefito=:crefito');
+                                    $r2->execute(array(':novoCrefito'=>$novoCrefito,':nome'=>$nome,':senha'=>$senha,':crefito'=>$crefito));
+                                    $_SESSION['msgm'] = require_once 'extras/msgAtualizado.php';
+                                } else {$_SESSION['msgm'] = require_once 'extras/msgExiste.php';}
+                            }
+                        ?>
+                        
+                        <form action="admIndex.php" method="post">
+                            <p id="obs">Obs: Preencha todos os campos!</p>
+                            Fisioterapeuta è editar
+                            <select name="crefito3">
+                                <?php
+                                    $r = $db->query('SELECT crefito,nome FROM fisioterapeuta ORDER BY crefito');
+                                    $linhas = $r->fetchAll(PDO::FETCH_ASSOC);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                                    foreach($linhas as $l) {echo "<option value=".$l['crefito'].">".$l['crefito']."- ".$l['nome']."</option>";}
+                                ?>
+                            </select><br>
+                            <input type="number" name="nCrefito" placeholder="Novo crefito" min="100000" max="999999">
+                            <input type="text" name="nNome" placeholder="Novo nome" maxlength="70">
+                            <input type="text" name="nSenha" placeholder="Nova senha" minlength="5" maxlength="5">
+                            <input type="submit" value="Atualizar">
+                        </form>
 
                     </div>
                 </div>
@@ -114,13 +126,13 @@
                         ?>
 
                         <form action="admIndex.php" method="post">
-                            Crefito à remover
+                            Fisioterapeuta à remover
                             <select name="crefito2">
                                 <?php
-                                    $r = $db->query('SELECT crefito FROM fisioterapeuta ORDER BY crefito');
+                                    $r = $db->query('SELECT crefito,nome FROM fisioterapeuta ORDER BY crefito');
                                     $linhas = $r->fetchAll(PDO::FETCH_ASSOC);
 
-                                    foreach($linhas as $l) {echo "<option value=".$l['crefito'].">".$l['crefito']."</option>";}
+                                    foreach($linhas as $l) {echo "<option value=".$l['crefito'].">".$l['crefito']."- ".$l['nome']."</option>";}
                                 ?>
                             </select>
                             <input type="submit" value="Remover">

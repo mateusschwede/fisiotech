@@ -1,4 +1,4 @@
-# fisiotech
+# Fisiotech
 Software de gestão de consultório de fisioterapia
 
 > Autor: Mateus Schwede

@@ -11,6 +11,7 @@ CREATE TABLE fisioterapeuta (
 CREATE TABLE paciente (
     cpf BIGINT NOT NULL,
     nome VARCHAR(70) NOT NULL,
+    ativo BOOLEAN NOT NULL DEFAULT true,
     PRIMARY KEY(cpf)
 ) CHARSET = 'utf8';
 
