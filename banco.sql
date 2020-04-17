@@ -23,17 +23,8 @@ CREATE TABLE sessao (
     termino DATETIME NOT NULL,
     realizada BOOLEAN NOT NULL DEFAULT false,
     cancelada BOOLEAN NOT NULL DEFAULT false,
-    PRIMARY KEY(id),
-    FOREIGN KEY(crefito) REFERENCES fisioterapeuta(crefito),
-    FOREIGN KEY(cpf) REFERENCES paciente(cpf)
+    PRIMARY KEY(id)
 ) CHARSET = 'utf8';
 
-INSERT INTO fisioterapeuta(crefito,nome,senha) VALUES
-(12345,"mateus","123"),
-(12346,"mateus2","1234"),
-(12347,"mateus3","1235");
-
-INSERT INTO paciente(cpf,nome) VALUES
-(12345678909,"max"),
-(12345678900,"max2"),
-(12345678910,"max3");
+INSERT INTO fisioterapeuta(crefito,nome,senha) VALUES (12345,"mateus","123"),(12346,"mateus2","1234"),(12347,"mateus3","1235");
+INSERT INTO paciente(cpf,nome) VALUES (12345678909,"max"),(12345678900,"max2"),(12345678910,"max3");
