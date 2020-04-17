@@ -30,24 +30,21 @@
 
     <div class="row">
         <div class="col-sm-12">
-            <h1><svg class="bi bi-people" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zm-7.995-.944v-.002.002zM7.022 13h7.956a.274.274 0 00.014-.002l.008-.002c-.002-.264-.167-1.03-.76-1.72C13.688 10.629 12.718 10 11 10c-1.717 0-2.687.63-3.24 1.276-.593.69-.759 1.457-.76 1.72a1.05 1.05 0 00.022.004zm7.973.056v-.002.002zM11 7a2 2 0 100-4 2 2 0 000 4zm3-2a3 3 0 11-6 0 3 3 0 016 0zM6.936 9.28a5.88 5.88 0 00-1.23-.247A7.35 7.35 0 005 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 015 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816zM4.92 10c-1.668.02-2.615.64-3.16 1.276C1.163 11.97 1 12.739 1 13h3c0-1.045.323-2.086.92-3zM1.5 5.5a3 3 0 116 0 3 3 0 01-6 0zm3-2a2 2 0 100 4 2 2 0 000-4z" clip-rule="evenodd"/></svg> Fisioterapeutas</h1>
-            <button type="button" class="btn btn-link" onclick="window.location.href='addFisio.php'">ADICIONAR</button>
+            <h1><svg class="bi bi-people" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zm-7.995-.944v-.002.002zM7.022 13h7.956a.274.274 0 00.014-.002l.008-.002c-.002-.264-.167-1.03-.76-1.72C13.688 10.629 12.718 10 11 10c-1.717 0-2.687.63-3.24 1.276-.593.69-.759 1.457-.76 1.72a1.05 1.05 0 00.022.004zm7.973.056v-.002.002zM11 7a2 2 0 100-4 2 2 0 000 4zm3-2a3 3 0 11-6 0 3 3 0 016 0zM6.936 9.28a5.88 5.88 0 00-1.23-.247A7.35 7.35 0 005 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 015 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816zM4.92 10c-1.668.02-2.615.64-3.16 1.276C1.163 11.97 1 12.739 1 13h3c0-1.045.323-2.086.92-3zM1.5 5.5a3 3 0 116 0 3 3 0 01-6 0zm3-2a2 2 0 100 4 2 2 0 000-4z" clip-rule="evenodd"/></svg> Novo Fisioterapeuta</h1>
             <br>
-
-            <ul class="list-group">
-                <?php
-                    $r = $db->query("SELECT * FROM fisioterapeuta ORDER BY crefito");
-                    $linhas = $r->fetchAll(PDO::FETCH_ASSOC);
-                    foreach($linhas as $l) {
-                        echo "
-                            <li class='list-group-item d-flex justify-content-between align-items-center'>
-                                ".$l['nome']." | ".$l['senha']."
-                                <span class='badge badge-primary badge-pill'>".$l['crefito']."</span>
-                            </li>
-                        ";
-                    }
-                ?>
-            </ul>
+            <form action="addFisio.php" method="post">
+                <div class="form-group">
+                    <input type="number" class="form-control" min=0 max=1000000000 required name="crefito" placeholder="Crefito">
+                </div>
+                <div class="form-group">
+                    <input type="name" class="form-control" maxlength="70" required name="nome" placeholder="Nome">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" maxlength="5" required name="senha" placeholder="Senha">
+                </div>
+                <button type="button" class="btn btn-link" id="btnRed" onclick="window.location.href='adminFisios.php'">CANCELAR</button>
+                <button type="submit" class="btn btn-link">ADICIONAR</button>
+            </form>            
         </div>
     </div>
 
