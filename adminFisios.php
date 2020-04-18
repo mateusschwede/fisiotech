@@ -36,16 +36,15 @@
             <button type="button" class="btn btn-link" onclick="window.location.href='addFisio.php'">ADICIONAR</button>
             <br>
 
-            <ul class="list-group">
+            <ul class="list-group list-group-flush">
                 <?php
                     $r = $db->query("SELECT * FROM fisioterapeuta ORDER BY crefito");
                     $linhas = $r->fetchAll(PDO::FETCH_ASSOC);
                     foreach($linhas as $l) {
                         echo "
-                            <li class='list-group-item d-flex justify-content-between align-items-center'>
-                                ".$l['nome']." | ".$l['senha']."
+                            <a href='edFisio.php?crefito?".base64_encode($l['crefito'])."' class='list-group-item list-group-item-action d-flex justify-content-between align-items-center'>                                ".$l['nome']." | ".$l['senha']."
                                 <span class='badge badge-primary badge-pill'>".$l['crefito']."</span>
-                            </li>
+                            </a>
                         ";
                     }
                 ?>
@@ -54,6 +53,6 @@
     </div>
 
 
-</div>    
+</div>
 </body>
 </html>
