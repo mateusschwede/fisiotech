@@ -1,6 +1,7 @@
 <?php
     require_once 'conect.php';
     session_start();
+    if ((empty($_SESSION['nome'])) or (empty($_SESSION['senha']))) {header("location: index.php");}
     if(!empty($_GET['crefito'])) {$_SESSION['crefito'] = base64_decode($_GET['crefito']);}
     
     if(!empty($_POST['rCrefito'])) {

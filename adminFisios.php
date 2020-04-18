@@ -1,6 +1,7 @@
 <?php
     require_once 'conect.php';
     session_start();
+    if ((empty($_SESSION['nome'])) or (empty($_SESSION['senha']))) {header("location: index.php");}
 ?>
 
 <!DOCTYPE html>
