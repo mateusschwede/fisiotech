@@ -4,6 +4,8 @@
     if ((!empty($_POST['codigo'])) and (!empty($_POST['senha']))) {
         $codigo = $_POST['codigo'];
         $senha = strtolower($_POST['senha']);
+        $r = $db->prepare("SELECT crefito,senha FROM fisioterapeuta WHERE crefito=? AND senha=?");
+        $r->execute(array($codigo,$senha));
 
         if (($codigo==100) and ($senha==100)) {
             session_start();
@@ -13,13 +15,11 @@
             header("location: pAdmin.php");
         }
 
-        $r = $db->prepare("SELECT crefito,senha FROM fisioterapeuta WHERE crefito=? AND senha=?");
-        $r->execute(array($codigo,$senha));
-
         if ($r->rowCount()>0) {
             session_start();
             $_SESSION['nome'] = $codigo;
-            $_SESSION['senhha'] = $senha;
+            $_SESSION['senha'] = $senha;
+            $_SESSION['msgm'] = null;
             header("location: pFisio.php");
         }
     }

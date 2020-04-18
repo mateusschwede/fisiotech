@@ -20,7 +20,7 @@ CREATE TABLE sessao (
     crefito BIGINT NOT NULL,
     cpf BIGINT NOT NULL,
     inicio DATETIME NOT NULL,
-    termino DATETIME NOT NULL,
+    termino DATETIME,
     realizada BOOLEAN NOT NULL DEFAULT false,
     cancelada BOOLEAN NOT NULL DEFAULT false,
     PRIMARY KEY(id)
