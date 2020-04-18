@@ -1,21 +1,11 @@
 <?php
     require_once 'conect.php';
     session_start();
-
-    if((!empty($_POST['crefito'])) and (!empty($_POST['nome'])) and (!empty($_POST['senha']))) {
-        $crefito = $_POST['crefito'];
-        $nome = strtolower($_POST['nome']);
-        $senha = strtolower($_POST['senha']);
-
-        $r = $db->prepare("SELECT crefito FROM fisioterapeuta WHERE crefito=?");
-        $r->execute(array($crefito));
-        if($r->rowCount()>0) {$_SESSION['msgm'] = "<div class='alert alert-light alert-dismissible fade show' role='alert' id='msgErro'>Crefito já existente!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>"; header("location: adminFisios.php");}
-        else {
-            $r = $db->prepare("INSERT INTO fisioterapeuta(crefito,nome,senha) VALUES (?,?,?)");
-            $r->execute(array($crefito,$nome,$senha));
-            $_SESSION['msgm'] = "<div class='alert alert-light alert-dismissible fade show' role='alert' id='msgSucesso'>Fisioterapeuta adicionado!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
-            header("location: adminFisios.php");
-        }
+    if(!empty($_GET['crefito'])) {$_SESSION['crefito'] = base64_decode($_GET['crefito']);}
+    
+    if(!empty($_POST['rCrefito'])) {
+        echo $_SESSION['crefito'];
+        //REMOVER
     }
 ?>
 
@@ -60,7 +50,8 @@
                     <input type="text" class="form-control" maxlength="5" required name="senha" placeholder="Senha">
                 </div>
                 <button type="button" class="btn btn-link" id="btnRed" onclick="window.location.href='adminFisios.php'">CANCELAR</button>
-                <button type="submit" class="btn btn-link">ADICIONAR</button>
+                <button type="submit" class="btn btn-link">ATUALIZAR</button>
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modRemover">REMOVER</button>
             </form>
         </div>
     </div>
@@ -69,3 +60,30 @@
 </div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+<div class="modal fade" id="modRemover" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Remover Fisioterapeuta</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-footer">
+        <form action="edFisio.php" method="post">
+            <input type="hidden" name="rCrefito" value="1">
+            <button type="button" class="btn btn-link" id="btnRed" data-dismiss="modal">CANCELAR</button>
+            <button type="submit" class="btn btn-link">REMOVER</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

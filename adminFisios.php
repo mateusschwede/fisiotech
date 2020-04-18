@@ -42,7 +42,7 @@
                     $linhas = $r->fetchAll(PDO::FETCH_ASSOC);
                     foreach($linhas as $l) {
                         echo "
-                            <a href='edFisio.php?crefito?".base64_encode($l['crefito'])."' class='list-group-item list-group-item-action d-flex justify-content-between align-items-center'>                                ".$l['nome']." | ".$l['senha']."
+                            <a href='edFisio.php?crefito=".base64_encode($l['crefito'])."' class='list-group-item list-group-item-action d-flex justify-content-between align-items-center'>                                ".$l['nome']." | ".$l['senha']."
                                 <span class='badge badge-primary badge-pill'>".$l['crefito']."</span>
                             </a>
                         ";
