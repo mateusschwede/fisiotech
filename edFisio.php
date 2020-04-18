@@ -4,8 +4,11 @@
     if(!empty($_GET['crefito'])) {$_SESSION['crefito'] = base64_decode($_GET['crefito']);}
     
     if(!empty($_POST['rCrefito'])) {
-        echo $_SESSION['crefito'];
-        //REMOVER
+        $r = $db->prepare("DELETE FROM fisioterapeuta WHERE crefito=?");
+        $r->execute(array($_SESSION['crefito']));
+        unset($_SESSION['crefito']);
+        $_SESSION['msgm'] = "<div class='alert alert-light alert-dismissible fade show' role='alert' id='msgSucesso'>Fisioterapeuta removido!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+        header("location: adminFisios.php");
     }
 ?>
 
