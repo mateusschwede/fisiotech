@@ -51,7 +51,7 @@
                     foreach($linhas as $l) {
                         echo "
                         <li class='list-group-item'>
-                            ".$l['cpf']." | ".$l['nome']."<a class='btn btn-link' href='ativarPaciente.php?cfp=".base64_encode($l['cpf'])."''>ATIVAR</a>
+                            ".$l['cpf']." | ".$l['nome']."<a class='btn btn-link' href='ativarPaciente.php?cpf=".base64_encode($l['cpf'])."''>ATIVAR</a>
                         </li>
                         ";
                     }
