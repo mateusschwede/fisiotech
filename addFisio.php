@@ -1,5 +1,22 @@
 <?php
     require_once 'conect.php';
+    session_start();
+
+    if((!empty($_POST['crefito'])) and (!empty($_POST['nome'])) and (!empty($_POST['senha']))) {
+        $crefito = $_POST['crefito'];
+        $nome = strtolower($_POST['nome']);
+        $senha = strtolower($_POST['senha']);
+
+        $r = $db->prepare("SELECT crefito FROM fisioterapeuta WHERE crefito=?");
+        $r->execute(array($crefito));
+        if($r->rowCount()>0) {$_SESSION['msgm'] = "<div class='alert alert-light alert-dismissible fade show' role='alert' id='msgErro'>Crefito já existente!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>"; header("location: adminFisios.php");}
+        else {
+            $r = $db->prepare("INSERT INTO fisioterapeuta(crefito,nome,senha) VALUES (?,?,?)");
+            $r->execute(array($crefito,$nome,$senha));
+            $_SESSION['msgm'] = "<div class='alert alert-light alert-dismissible fade show' role='alert' id='msgSucesso'>Fisioterapeuta adicionado!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+            header("location: adminFisios.php");
+        }
+    }
 ?>
 
 <!DOCTYPE html>
@@ -16,7 +33,7 @@
 </head>
 <body>
 <div class="container-fluid">
-  
+
     
     <div class="row">
         <div class="col-sm-12" id="menu">

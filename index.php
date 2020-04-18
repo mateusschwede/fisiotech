@@ -9,6 +9,7 @@
             session_start();
             $_SESSION['nome'] = 100;
             $_SESSION['senhha'] = 100;
+            $_SESSION['msgm'] = null;
             header("location: pAdmin.php");
         }
 

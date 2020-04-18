@@ -5,3 +5,6 @@
 div#entrada {padding: 0%; text-align: center;}
 div#menu {padding: 0%;}
 #btnRed {color: red;}
+#msgErro {color: red;}
+#msgSucesso {color: green;}
+#msgAlerta {color: rgb(199, 155, 11);}
