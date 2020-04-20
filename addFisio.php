@@ -61,7 +61,7 @@
                     <input type="number" class="form-control" min=0 max=1000000000 required name="crefito" placeholder="Crefito">
                 </div>
                 <div class="form-group">
-                    <input type="name" class="form-control" maxlength="70" required name="nome" placeholder="Nome">
+                    <input type="text" class="form-control" maxlength="70" required name="nome" placeholder="Nome">
                 </div>
                 <div class="form-group">
                     <input type="text" class="form-control" maxlength="5" required name="senha" placeholder="Senha">

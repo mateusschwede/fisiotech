@@ -19,8 +19,8 @@ CREATE TABLE sessao (
     id INTEGER NOT NULL AUTO_INCREMENT,
     crefito BIGINT NOT NULL,
     cpf BIGINT NOT NULL,
-    inicio DATETIME NOT NULL,
-    termino DATETIME,
+    dia DATE NOT NULL,
+    horario INTEGER NOT NULL,
     realizada BOOLEAN NOT NULL DEFAULT false,
     cancelada BOOLEAN NOT NULL DEFAULT false,
     PRIMARY KEY(id)
