@@ -11,12 +11,12 @@
 
         $r = $db->prepare("SELECT id FROM sessao WHERE dia=? AND horario=? AND cancelada=0 AND crefito=?");
         $r->execute(array($dia,$horario,$_SESSION['nome']));
-        if ($r->rowCount()>0) {$_SESSION['msgm'] = "<div class='alert alert-light alert-dismissible fade show' role='alert' id='msgErro'>Horário indisponível!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>"; header("location: fisioSessoes.php");}
+        if ($r->rowCount()>0) {$_SESSION['msgm'] = "<div class='alert alert-light alert-dismissible fade show' role='alert' id='msgErro'>Horário indisponível!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>"; header("location: pFisio.php");}
         else {
             $r = $db->prepare("INSERT INTO sessao(crefito,cpf,dia,horario) VALUES (?,?,?,?)");
             $r-> execute(array($crefito,$cpf,$dia,$horario));
             $_SESSION['msgm'] = "<div class='alert alert-light alert-dismissible fade show' role='alert' id='msgSucesso'>Sessão adicionada!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
-            header("location: fisioSessoes.php");
+            header("location: pFisio.php");
         }
     }
 ?>
