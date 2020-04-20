@@ -43,16 +43,79 @@
             <button type="button" class="btn btn-link" onclick="window.location.href='addSessao.php'">ADICIONAR</button>
             <br>
 
+            <form action="fisioSessoes.php" method="post">
+                <div class="form-group">
+                    <label for="dia">Dia</label>
+                    <input type="date" id="dia" class="form-control" required name="dia">
+                </div>
+                <button type="submit" class="btn btn-link">LISTAR</button>
+            </form>
+
             <ul class="list-group list-group-flush">
                 <?php
-                    $r = $db->query("SELECT * FROM paciente WHERE ativo=1 ORDER BY cpf");
-                    $linhas = $r->fetchAll(PDO::FETCH_ASSOC);
-                    foreach($linhas as $l) {
-                        echo "
-                            <a href='edPaciente.php?cpf=".base64_encode($l['cpf'])."' class='list-group-item list-group-item-action d-flex justify-content-between align-items-center'>
-                            ".$l['cpf']." | ".$l['nome']."
-                            </a>
-                        ";
+                    if(!empty($_POST['dia'])) {
+                        echo "<h3>Dia ".$_POST['dia']."</h3>";
+                        $dia = $_POST['dia'];
+                        $r = $db->prepare("SELECT * FROM sessao WHERE dia=? AND crefito=? ORDER BY horario");
+                        $r->execute(array($dia,$_SESSION['nome']));
+                        $linhas = $r->fetchAll(PDO::FETCH_ASSOC);
+                        foreach($linhas as $l) {
+                            $r2 = $db->prepare("SELECT nome FROM paciente WHERE cpf=?");
+                            $r2->execute(array($l['cpf']));
+                            $linhas2 = $r2->fetchAll(PDO::FETCH_ASSOC);
+                            foreach($linhas2 as $l2) {$nome = $l2['nome'];}
+                            
+                            if($l['cancelada']==1) {
+                                echo "
+                                    <a href='#' class='list-group-item list-group-item-action d-flex justify-content-between align-items-center' style='color: red;'>
+                                    <strong>".$l['horario'].":00</strong> ".$l['cpf']." - ".$nome."
+                                    </a>
+                                ";
+                            } elseif($l['realizada']==1) {
+                                echo "
+                                    <a href='#' class='list-group-item list-group-item-action d-flex justify-content-between align-items-center' style='color: green;'>
+                                    <strong>".$l['horario'].":00</strong> ".$l['cpf']." - ".$nome."
+                                    </a>
+                                ";
+                            } else {
+                                echo "
+                                    <a href='painelSessao.php?id=".base64_encode($l['id'])."' class='list-group-item list-group-item-action d-flex justify-content-between align-items-center'>
+                                    <strong>".$l['horario'].":00</strong> ".$l['cpf']." - ".$nome."
+                                    </a>
+                                ";
+                            }
+                        }
+                    } else {
+                        echo "<h3>Hoje</h3>";
+                        $r = $db->prepare("SELECT * FROM sessao WHERE dia=? AND crefito=? ORDER BY horario");
+                        $r->execute(array(date('Y-m-d'),$_SESSION['nome']));
+                        $linhas = $r->fetchAll(PDO::FETCH_ASSOC);
+                        foreach($linhas as $l) {
+                            $r2 = $db->prepare("SELECT nome FROM paciente WHERE cpf=?");
+                            $r2->execute(array($l['cpf']));
+                            $linhas2 = $r2->fetchAll(PDO::FETCH_ASSOC);
+                            foreach($linhas2 as $l2) {$nome = $l2['nome'];}
+                            
+                            if($l['cancelada']==1) {
+                                echo "
+                                    <a href='#' class='list-group-item list-group-item-action d-flex justify-content-between align-items-center' style='color: red;'>
+                                    <strong>".$l['horario'].":00</strong> ".$l['cpf']." - ".$nome."
+                                    </a>
+                                ";
+                            } elseif($l['realizada']==1) {
+                                echo "
+                                    <a href='#' class='list-group-item list-group-item-action d-flex justify-content-between align-items-center' style='color: green;'>
+                                    <strong>".$l['horario'].":00</strong> ".$l['cpf']." - ".$nome."
+                                    </a>
+                                ";
+                            } else {
+                                echo "
+                                    <a href='painelSessao.php?id=".base64_encode($l['id'])."' class='list-group-item list-group-item-action d-flex justify-content-between align-items-center'>
+                                    <strong>".$l['horario'].":00</strong> ".$l['cpf']." - ".$nome."
+                                    </a>
+                                ";
+                            }
+                        }
                     }
                 ?>
             </ul>
