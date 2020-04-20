@@ -38,6 +38,12 @@
 
     <div class="row">
         <div class="col-sm-12">
+            <?php
+                $r = $db->prepare("SELECT nome FROM fisioterapeuta WHERE crefito=?");
+                $r->execute(array($_SESSION['nome']));
+                $linhas = $r->fetchAll(PDO::FETCH_ASSOC);
+                foreach($linhas as $l) {echo "<span class='badge badge-secondary'>".$l['nome']."</span>";}
+            ?>
             <button type="button" class="btn btn-link" id="btnRed" data-dismiss="modal" onclick="window.location.href='logout.php'"><svg class="bi bi-power" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.578 4.437a5 5 0 104.922.044l.5-.866a6 6 0 11-5.908-.053l.486.875z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M7.5 8V1h1v7h-1z" clip-rule="evenodd"/></svg> Logout</button>
 
             <?php
