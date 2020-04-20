@@ -77,7 +77,7 @@
             <br>
             <form action="edPaciente.php?cpf2=<?=base64_encode($_SESSION['cpf'])?>" method="post">
                 <div class="form-group">
-                    <input type="number" class="form-control" min=0 max=1000000000 required name="cpf" placeholder="Cpf" value="<?=$_SESSION['cpf']?>">
+                    <input type="number" class="form-control" min=1 max=99999999999 required name="cpf" placeholder="Cpf" value="<?=$_SESSION['cpf']?>">
                 </div>
                 <div class="form-group">
                     <input type="text" class="form-control" maxlength="70" required name="nome" placeholder="Nome" value="<?=$nome?>">
