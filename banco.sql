@@ -23,6 +23,7 @@ CREATE TABLE sessao (
     horario INTEGER NOT NULL,
     realizada BOOLEAN NOT NULL DEFAULT false,
     cancelada BOOLEAN NOT NULL DEFAULT false,
+    descricao VARCHAR(150) DEFAULT "andamento",
     PRIMARY KEY(id)
 ) CHARSET = 'utf8';
 
