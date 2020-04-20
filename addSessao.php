@@ -3,18 +3,20 @@
     session_start();
     if ((empty($_SESSION['nome'])) or (empty($_SESSION['senha']))) {header("location: index.php");}
 
-    if (!empty($_POST['cpf']) and (!empty($_POST['nome']))) {
+    if ((!empty($_POST['cpf'])) and (!empty($_POST['dia'])) and (!empty($_POST['horario']))) {
+        $crefito = $_SESSION['nome'];
         $cpf = $_POST['cpf'];
-        $nome = strtolower($_POST['nome']);
+        $dia = $_POST['dia'];
+        $horario = $_POST['horario'];
 
-        $r = $db->prepare("SELECT cpf FROM paciente WHERE cpf=?");
-        $r->execute(array($cpf));
-        if($r->rowCount()>0) {$_SESSION['msgm'] = "<div class='alert alert-light alert-dismissible fade show' role='alert' id='msgErro'>Cpf já existente!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>"; header("location: fisioPacientes.php");}
+        $r = $db->prepare("SELECT id FROM sessao WHERE dia=? AND horario=? AND cancelada=0");
+        $r->execute(array($dia,$horario));
+        if ($r->rowCount()>0) {$_SESSION['msgm'] = "<div class='alert alert-light alert-dismissible fade show' role='alert' id='msgErro'>Horário indisponível!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>"; header("location: fisioSessoes.php");}
         else {
-            $r = $db->prepare("INSERT INTO paciente(cpf,nome) VALUES (?,?)");
-            $r->execute(array($cpf,$nome));
-            $_SESSION['msgm'] = "<div class='alert alert-light alert-dismissible fade show' role='alert' id='msgSucesso'>Paciente adicionado!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
-            header("location: fisioPacientes.php");
+            $r = $db->prepare("INSERT INTO sessao(crefito,cpf,dia,horario) VALUES (?,?,?,?)");
+            $r-> execute(array($crefito,$cpf,$dia,$horario));
+            $_SESSION['msgm'] = "<div class='alert alert-light alert-dismissible fade show' role='alert' id='msgSucesso'>Sessão adicionada!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+            header("location: fisioSessoes.php");
         }
     }
 ?>
@@ -55,7 +57,6 @@
         <div class="col-sm-12">
             <h1><svg class="bi bi-calendar" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M14 0H2a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V2a2 2 0 00-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M6.5 7a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm-9 3a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm-9 3a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/></svg> Nova Sessão</h1>
             <br>
-            <!-- Cpf, dia, hora-->
             <form action="addSessao.php" method="post">
                 <div class="form-group">
                     <label for="selectPacientes">Paciente</label>
@@ -69,7 +70,21 @@
                 </div>
                 <div class="form-group">
                     <label for="dia">Dia</label>
-                    <input type="date" id="dia" class="form-control" min="<?=?>" required name="dia">
+                    <input type="date" id="dia" class="form-control" required name="dia" min="<?=date('Y-m-d')?>">
+                </div>
+                <div class="form-group">
+                    <label for="selectHora">Horário</label>
+                    <select class="form-control" id="selectHora" required name="horario">
+                        <option value="8">8:00</option>
+                        <option value="9">9:00</option>
+                        <option value="10">10:00</option>
+                        <option value="11">11:00</option>
+                        <option value="13">13:00</option>
+                        <option value="14">14:00</option>
+                        <option value="15">15:00</option>
+                        <option value="16">16:00</option>
+                        <option value="17">17:00</option>
+                    </select>
                 </div>
                 <button type="button" class="btn btn-link" id="btnRed" onclick="window.location.href='fisioSessoes.php'">CANCELAR</button>
                 <button type="submit" class="btn btn-link">ADICIONAR</button>
