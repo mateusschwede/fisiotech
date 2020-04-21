@@ -231,6 +231,9 @@
                             else {echo "<li class='list-group-item'><strong>".$l['horario'].":00 ".$l['descricao']."</strong> Crefito: ".$l['crefito']."</li>";}
                         }
                     }
+
+                    // Listar tudo por Crefito
+                    
                 ?>
             </ul>
         </div>
