@@ -39,6 +39,7 @@
     <div class="row">
         <div class="col-sm-12">
             <?php
+                // Usuário
                 $r = $db->prepare("SELECT nome FROM fisioterapeuta WHERE crefito=?");
                 $r->execute(array($_SESSION['nome']));
                 $linhas = $r->fetchAll(PDO::FETCH_ASSOC);
@@ -47,6 +48,17 @@
             <button type="button" class="btn btn-link" id="btnRed" data-dismiss="modal" onclick="window.location.href='logout.php'"><svg class="bi bi-power" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.578 4.437a5 5 0 104.922.044l.5-.866a6 6 0 11-5.908-.053l.486.875z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M7.5 8V1h1v7h-1z" clip-rule="evenodd"/></svg> Logout</button>
 
             <?php
+                // Físios pendentes
+                $r = $db->prepare("SELECT count(id) FROM sessao WHERE crefito=? AND realizada=0 AND cancelada=0 AND dia<now()");
+                $r->execute(array($_SESSION['nome']));
+                $linhas = $r->fetchAll(PDO::FETCH_ASSOC);
+                foreach($linhas as $l){
+                    if($l['count(id)']>0){
+                        echo "<br><a class='btn btn-primary btn-sm' href='sessoesPendentes.php'>Sessões pendentes <span class='badge badge-danger'>".$l['count(id)']."</span></a>";
+                        echo "<div class='alert alert-light alert-dismissible fade show' role='alert' id='msgAlerta'>Você possui ".$l['count(id)']." sessões pendentes abertas!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+                    }
+                }
+            
                 $r = $db->prepare("SELECT count(id) FROM sessao WHERE crefito=? AND realizada=0 AND cancelada=0");
                 $r->execute(array($_SESSION['nome']));
                 $linhas = $r->fetchAll(PDO::FETCH_ASSOC);
