@@ -39,42 +39,38 @@
     <div class="row">
         <div class="col-sm-12">
             <?php
+                // Pills estatísticas
+                $r = $db->prepare("SELECT count(id) FROM sessao WHERE crefito=? AND realizada=0 AND cancelada=0");
+                $r->execute(array($_SESSION['nome']));
+                $linhas = $r->fetchAll(PDO::FETCH_ASSOC);
+                foreach($linhas as $l) {$abertas = $l['count(id)'];}
+                $r = $db->prepare("SELECT count(id) FROM sessao WHERE crefito=? AND realizada=1");
+                $r->execute(array($_SESSION['nome']));
+                $linhas = $r->fetchAll(PDO::FETCH_ASSOC);
+                foreach($linhas as $l) {$realizadas = $l['count(id)'];}
+                $r = $db->prepare("SELECT count(id) FROM sessao WHERE crefito=? AND cancelada=1");
+                $r->execute(array($_SESSION['nome']));
+                $linhas = $r->fetchAll(PDO::FETCH_ASSOC);
+                foreach($linhas as $l) {$canceladas = $l['count(id)'];}
+                echo "<p><span class='badge badge-pill badge-primary'>".$abertas." abertas</span> <span class='badge badge-pill badge-success'>".$realizadas." realizadas</span> <span class='badge badge-pill badge-danger'>".$canceladas." canceladas</span></p>";
+                
                 // Usuário
                 $r = $db->prepare("SELECT nome FROM fisioterapeuta WHERE crefito=?");
                 $r->execute(array($_SESSION['nome']));
                 $linhas = $r->fetchAll(PDO::FETCH_ASSOC);
                 foreach($linhas as $l) {echo "<span class='badge badge-secondary'>".$l['nome']."</span>";}
-            ?>
-            <button type="button" class="btn btn-link" id="btnRed" data-dismiss="modal" onclick="window.location.href='logout.php'"><svg class="bi bi-power" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.578 4.437a5 5 0 104.922.044l.5-.866a6 6 0 11-5.908-.053l.486.875z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M7.5 8V1h1v7h-1z" clip-rule="evenodd"/></svg> Logout</button>
-
-            <?php
+                echo "<a class='btn btn-link' id='btnRed' data-dismiss='modal' href='logout.php'><svg class='bi bi-power' width='1em' height='1em' viewBox='0 0 16 16' fill='currentColor' xmlns='http://www.w3.org/2000/svg'><path fill-rule='evenodd' d='M5.578 4.437a5 5 0 104.922.044l.5-.866a6 6 0 11-5.908-.053l.486.875z' clip-rule='evenodd'/><path fill-rule='evenodd' d='M7.5 8V1h1v7h-1z' clip-rule='evenodd'/></svg> Logout</a>";
+            
                 // Físios pendentes
                 $r = $db->prepare("SELECT count(id) FROM sessao WHERE crefito=? AND realizada=0 AND cancelada=0 AND dia<now()");
                 $r->execute(array($_SESSION['nome']));
                 $linhas = $r->fetchAll(PDO::FETCH_ASSOC);
                 foreach($linhas as $l){
                     if($l['count(id)']>0){
-                        echo "<br><a class='btn btn-primary btn-sm' href='sessoesPendentes.php'>Sessões pendentes <span class='badge badge-danger'>".$l['count(id)']."</span></a>";
+                        echo "<a class='btn btn-primary btn-sm' href='sessoesPendentes.php'>Sessões pendentes <span class='badge badge-danger'>".$l['count(id)']."</span></a>";
                         echo "<div class='alert alert-light alert-dismissible fade show' role='alert' id='msgAlerta'>Você possui ".$l['count(id)']." sessões pendentes abertas!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
                     }
                 }
-            
-                $r = $db->prepare("SELECT count(id) FROM sessao WHERE crefito=? AND realizada=0 AND cancelada=0");
-                $r->execute(array($_SESSION['nome']));
-                $linhas = $r->fetchAll(PDO::FETCH_ASSOC);
-                foreach($linhas as $l) {$abertas = $l['count(id)'];}
-
-                $r = $db->prepare("SELECT count(id) FROM sessao WHERE crefito=? AND realizada=1");
-                $r->execute(array($_SESSION['nome']));
-                $linhas = $r->fetchAll(PDO::FETCH_ASSOC);
-                foreach($linhas as $l) {$realizadas = $l['count(id)'];}
-
-                $r = $db->prepare("SELECT count(id) FROM sessao WHERE crefito=? AND cancelada=1");
-                $r->execute(array($_SESSION['nome']));
-                $linhas = $r->fetchAll(PDO::FETCH_ASSOC);
-                foreach($linhas as $l) {$canceladas = $l['count(id)'];}
-
-                echo "<h2 style='text-align: center;'><span class='badge badge-pill badge-primary'>".$abertas." abertas</span> <span class='badge badge-pill badge-success'>".$realizadas." realizadas</span> <span class='badge badge-pill badge-danger'>".$canceladas." canceladas</span></h2>"
             ?>
 
             <h1><svg class="bi bi-briefcase" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M0 12.5A1.5 1.5 0 001.5 14h13a1.5 1.5 0 001.5-1.5v-6h-1v6a.5.5 0 01-.5.5h-13a.5.5 0 01-.5-.5v-6H0v6z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M0 4.5A1.5 1.5 0 011.5 3h13A1.5 1.5 0 0116 4.5v2.384l-7.614 2.03a1.5 1.5 0 01-.772 0L0 6.884V4.5zM1.5 4a.5.5 0 00-.5.5v1.616l6.871 1.832a.5.5 0 00.258 0L15 6.116V4.5a.5.5 0 00-.5-.5h-13zM5 2.5A1.5 1.5 0 016.5 1h3A1.5 1.5 0 0111 2.5V3h-1v-.5a.5.5 0 00-.5-.5h-3a.5.5 0 00-.5.5V3H5v-.5z" clip-rule="evenodd"/></svg> Sessões hoje</h1>
