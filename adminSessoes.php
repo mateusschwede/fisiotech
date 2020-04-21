@@ -194,8 +194,6 @@
                     if((!empty($_POST['dia'])) and (!empty($_POST['crefito']))) {
                         $dia = $_POST['dia'];
                         $crefito = $_POST['crefito'];
-                        if(empty($_POST['andamento'])) {$andamento = 0;}
-                        else {$andamento = $_POST['andamento'];}
                         if(empty($_POST['realizada'])) {$realizada = 0;}
                         else {$realizada = $_POST['realizada'];}
                         if(empty($_POST['cancelada'])) {$cancelada = 0;}
@@ -205,11 +203,32 @@
                         $r->execute(array($dia,$crefito,$realizada,$cancelada));
                         $linhas = $r->fetchAll(PDO::FETCH_ASSOC);
                         
-                        echo "<h3>Crefito ".$crefito.", ".$_POST['dia']."</h3>";
+                        echo "<h3>Crefito ".$crefito.", ".$dia."</h3>";
                         foreach($linhas as $l) {
                             if($l['cancelada']==1) {echo "<li class='list-group-item' style='color: red;'><strong>".$l['horario'].":00 ".$l['descricao']."</strong> Cpf: ".$l['cpf']."</li>";}
                             elseif($l['realizada']==1) {echo "<li class='list-group-item' style='color: green;'><strong>".$l['horario'].":00 ".$l['descricao']."</strong> Cpf: ".$l['cpf']."</li>";}
                             else {echo "<li class='list-group-item'><strong>".$l['horario'].":00 ".$l['descricao']."</strong> Cpf: ".$l['cpf']."</li>";}
+                        }
+                    }
+
+                    // Listagem por dia/cpf
+                    if((!empty($_POST['dia2'])) and (!empty($_POST['cpf2']))) {
+                        $dia = $_POST['dia2'];
+                        $cpf = $_POST['cpf2'];
+                        if(empty($_POST['realizada2'])) {$realizada = 0;}
+                        else {$realizada = $_POST['realizada2'];}
+                        if(empty($_POST['cancelada2'])) {$cancelada = 0;}
+                        else {$cancelada = $_POST['cancelada2'];}
+
+                        $r = $db->prepare("SELECT * FROM sessao WHERE dia=? AND cpf=? AND realizada=? AND cancelada=? ORDER BY horario");
+                        $r->execute(array($dia,$cpf,$realizada,$cancelada));
+                        $linhas = $r->fetchAll(PDO::FETCH_ASSOC);
+
+                        echo "<h3>Cpf ".$cpf.", ".$dia."</h3>";
+                        foreach($linhas as $l) {
+                            if($l['cancelada']==1) {echo "<li class='list-group-item' style='color: red;'><strong>".$l['horario'].":00 ".$l['descricao']."</strong> Crefito: ".$l['crefito']."</li>";}
+                            elseif($l['realizada']==1) {echo "<li class='list-group-item' style='color: green;'><strong>".$l['horario'].":00 ".$l['descricao']."</strong> Crefito: ".$l['crefito']."</li>";}
+                            else {echo "<li class='list-group-item'><strong>".$l['horario'].":00 ".$l['descricao']."</strong> Crefito: ".$l['crefito']."</li>";}
                         }
                     }
                 ?>
