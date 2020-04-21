@@ -49,7 +49,7 @@
                     </div>
                     <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
                     <div class="card-body">
-                        <form action="fisioSessoes.php" method="post">
+                        <form action="adminSessoes.php" method="post">
                             <div class="form-group">
                                 <label for="dia">Dia</label>
                                 <input type="date" id="dia" class="form-control" required name="dia">
@@ -63,10 +63,6 @@
                                         foreach($linhas as $l) {echo "<option value=".$l['crefito'].">".$l['crefito']." ".$l['nome']."</option>";}
                                     ?>
                                 </select>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="andamento" value="1" id="checkAndamento" checked>
-                                <label class="form-check-label" for="checkAndamento">Andamento</label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="realizada" value="1" id="checkRealizada">
@@ -88,7 +84,7 @@
                     </div>
                     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
                     <div class="card-body">
-                        <form action="fisioSessoes.php" method="post">
+                        <form action="adminSessoes.php" method="post">
                             <div class="form-group">
                                 <label for="dia">Dia</label>
                                 <input type="date" id="dia" class="form-control" required name="dia2">
@@ -105,10 +101,6 @@
                                         }
                                     ?>
                                 </select>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="andamento2" value="1" id="checkAndamento" checked>
-                                <label class="form-check-label" for="checkAndamento">Andamento</label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="realizada2" value="1" id="checkRealizada">
@@ -130,7 +122,7 @@
                     </div>
                     <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
                     <div class="card-body">
-                        <form action="fisioSessoes.php" method="post">
+                        <form action="adminSessoes.php" method="post">
                             <div class="form-group">
                                 <label for="selectCrefito3">Crefito</label>
                                 <select class="form-control" required id="selectCrefito3" name="crefito3">
@@ -140,10 +132,6 @@
                                         foreach($linhas as $l) {echo "<option value=".$l['crefito'].">".$l['crefito']." ".$l['nome']."</option>";}
                                     ?>
                                 </select>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="andamento3" value="1" id="checkAndamento" checked>
-                                <label class="form-check-label" for="checkAndamento">Andamento</label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="realizada3" value="1" id="checkRealizada" checked>
@@ -165,7 +153,7 @@
                     </div>
                     <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
                     <div class="card-body">
-                        <form action="fisioSessoes.php" method="post">
+                        <form action="adminSessoes.php" method="post">
                             <div class="form-group">
                                 <label for="selectCpf4">Cpf</label>
                                 <select class="form-control" required id="selectCpf4" name="cpf4">
@@ -178,10 +166,6 @@
                                         }
                                     ?>
                                 </select>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="andamento4" value="1" id="checkAndamento" checked>
-                                <label class="form-check-label" for="checkAndamento">Andamento</label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="realizada4" value="1" id="checkRealizada" checked>
@@ -206,40 +190,26 @@
         <div class="col-sm-12">
             <ul class="list-group list-group-flush">
                 <?php
-                    if(!empty($_POST['dia'])) {
+                    // Listagem por dia/crefito
+                    if((!empty($_POST['dia'])) and (!empty($_POST['crefito']))) {
                         $dia = $_POST['dia'];
-                        if ($dia == date(date('Y-m-d'))) {echo "<h3>Hoje</h3>";}
-                        else {echo "<h3>Dia ".$_POST['dia']."</h3>";}
+                        $crefito = $_POST['crefito'];
+                        if(empty($_POST['andamento'])) {$andamento = 0;}
+                        else {$andamento = $_POST['andamento'];}
+                        if(empty($_POST['realizada'])) {$realizada = 0;}
+                        else {$realizada = $_POST['realizada'];}
+                        if(empty($_POST['cancelada'])) {$cancelada = 0;}
+                        else {$cancelada = $_POST['cancelada'];}
                         
-                        $r = $db->prepare("SELECT * FROM sessao WHERE dia=? AND crefito=? ORDER BY horario");
-                        $r->execute(array($dia,$_SESSION['nome']));
+                        $r = $db->prepare("SELECT * FROM sessao WHERE dia=? AND crefito=? AND realizada=? AND cancelada=? ORDER BY horario");
+                        $r->execute(array($dia,$crefito,$realizada,$cancelada));
                         $linhas = $r->fetchAll(PDO::FETCH_ASSOC);
                         
+                        echo "<h3>Crefito ".$crefito.", ".$_POST['dia']."</h3>";
                         foreach($linhas as $l) {
-                            $r2 = $db->prepare("SELECT nome FROM paciente WHERE cpf=?");
-                            $r2->execute(array($l['cpf']));
-                            $linhas2 = $r2->fetchAll(PDO::FETCH_ASSOC);
-                            foreach($linhas2 as $l2) {$nome = $l2['nome'];}
-                            
-                            if($l['cancelada']==1) {
-                                echo "
-                                    <a href='#' class='list-group-item list-group-item-action d-flex justify-content-between align-items-center' style='color: red;'>
-                                    <strong>".$l['horario'].":00 ".$l['descricao']."</strong>".$l['cpf']." - ".$nome."
-                                    </a>
-                                ";
-                            } elseif($l['realizada']==1) {
-                                echo "
-                                    <a href='#' class='list-group-item list-group-item-action d-flex justify-content-between align-items-center' style='color: green;'>
-                                    <strong>".$l['horario'].":00 ".$l['descricao']."</strong> ".$l['cpf']." - ".$nome."
-                                    </a>
-                                ";
-                            } else {
-                                echo "
-                                    <a href='#' class='list-group-item list-group-item-action d-flex justify-content-between align-items-center'>
-                                    <strong>".$l['horario'].":00 ".$l['descricao']."</strong> ".$l['cpf']." - ".$nome."
-                                    </a>
-                                ";
-                            }
+                            if($l['cancelada']==1) {echo "<li class='list-group-item' style='color: red;'><strong>".$l['horario'].":00 ".$l['descricao']."</strong> Cpf: ".$l['cpf']."</li>";}
+                            elseif($l['realizada']==1) {echo "<li class='list-group-item' style='color: green;'><strong>".$l['horario'].":00 ".$l['descricao']."</strong> Cpf: ".$l['cpf']."</li>";}
+                            else {echo "<li class='list-group-item'><strong>".$l['horario'].":00 ".$l['descricao']."</strong> Cpf: ".$l['cpf']."</li>";}
                         }
                     }
                 ?>
