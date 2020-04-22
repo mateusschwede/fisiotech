@@ -24,6 +24,7 @@ CREATE TABLE sessao (
     realizada BOOLEAN NOT NULL DEFAULT false,
     cancelada BOOLEAN NOT NULL DEFAULT false,
     descricao VARCHAR(150) DEFAULT "andamento",
+    valor FLOAT NOT NULL DEFAULT 0,
     PRIMARY KEY(id)
 ) CHARSET = 'utf8';
 

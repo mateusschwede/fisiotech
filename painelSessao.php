@@ -48,9 +48,10 @@
         header("location: pFisio.php");
     }
 
-    if(!empty($_POST['rId2'])) {
-        $r = $db->prepare("UPDATE sessao SET realizada=1 WHERE id=?");
-        $r->execute(array($_SESSION['id']));
+    if((!empty($_POST['rId2'])) and (!empty($_POST['descricao2']))) {
+        $descricao = strtolower($_POST['descricao2']);
+        $r = $db->prepare("UPDATE sessao SET realizada=1,descricao=? WHERE id=?");
+        $r->execute(array($descricao,$_SESSION['id']));
         unset($_SESSION['id']);
         $_SESSION['msgm'] = "<div class='alert alert-light alert-dismissible fade show' role='alert' id='msgSucesso'>Sessão realizada!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
         header("location: pFisio.php");
@@ -160,8 +161,11 @@
                     <h5 class="modal-title" id="exampleModalLabel3">Realizar Sessão</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-body">
                     <form action="painelSessao.php" method="post">
+                        <input type="text" class="form-control" maxlength="150" required name="descricao2" placeholder="Descrição">
+                </div>
+                <div class="modal-footer">
                         <input type="hidden" name="rId2" value="1">
                         <button type="button" class="btn btn-link" id="btnRed" data-dismiss="modal">VOLTAR</button>
                         <button type="submit" class="btn btn-link">CONFIRMAR</button>
