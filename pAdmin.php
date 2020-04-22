@@ -12,6 +12,7 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <link rel="stylesheet" href="estilo.css">
     <link rel="shortcut icon" href="https://img.icons8.com/ios-glyphs/30/000000/gymnastics.png"/>
     <title>FisioTech</title>
@@ -39,14 +40,72 @@
     <div class="row">
         <div class="col-sm-12">
             <button type="button" class="btn btn-link" id="btnRed" data-dismiss="modal" onclick="window.location.href='logout.php'"><svg class="bi bi-power" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.578 4.437a5 5 0 104.922.044l.5-.866a6 6 0 11-5.908-.053l.486.875z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M7.5 8V1h1v7h-1z" clip-rule="evenodd"/></svg> Logout</button>
-            <h2>Físios Realizadas</h2>
-            <h2>Físios Agendadas</h2>
-            <h2>Físios Total</h2>
-            <h2>Fisioterapeutas Cadastrados</h2>
-            <h2>Pacientes Ativos</h2>
-            <h2>Pacientes Inativos</h2>
-            <h2>Pacientes Total</h2>
-            <h2>Físio Realizada no momento</h2>
+            <br>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <h4><svg class="bi bi-graph-up" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h1v16H0V0zm1 15h15v1H1v-1z"/><path fill-rule="evenodd" d="M14.39 4.312L10.041 9.75 7 6.707l-3.646 3.647-.708-.708L7 5.293 9.959 8.25l3.65-4.563.781.624z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M10 3.5a.5.5 0 01.5-.5h4a.5.5 0 01.5.5v4a.5.5 0 01-1 0V4h-3.5a.5.5 0 01-.5-.5z" clip-rule="evenodd"/></svg> Financeiro</h4>
+            <button type="button" class="btn btn-link" onclick="window.location.href='adminFinanceiro.php'">ACESSAR</button>
+            <?php
+                $r = $db->query("SELECT sum(valor) FROM sessao WHERE realizada=1 AND cancelada=0");
+                $linhas = $r->fetchAll(PDO::FETCH_ASSOC);
+                foreach($linhas as $l) {$realizadas = $l['sum(valor)'];}
+                $r = $db->query("SELECT sum(valor) FROM sessao WHERE realizada=0 AND cancelada=1");
+                $linhas = $r->fetchAll(PDO::FETCH_ASSOC);
+                foreach($linhas as $l) {$canceladas = $l['sum(valor)'];}
+                $r = $db->query("SELECT sum(valor) FROM sessao WHERE realizada=0 AND cancelada=0");
+                $linhas = $r->fetchAll(PDO::FETCH_ASSOC);
+                foreach($linhas as $l) {$andamento = $l['sum(valor)'];}
+                echo "<p><span class='badge badge-pill badge-success'>R$ ".number_format($realizadas,2,",","")." realizadas</span> <span class='badge badge-pill badge-info'>R$ ".number_format($andamento,2,",","")." andamento</span> <span class='badge badge-pill badge-danger'>R$ ".number_format($canceladas,2,",","")." canceladas</span></p>";
+            ?>
+            <br>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-sm-12">
+            <h4><svg class="bi bi-calendar" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M14 0H2a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V2a2 2 0 00-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M6.5 7a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm-9 3a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm-9 3a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/></svg> Sessões</h4>
+            <?php
+                $r = $db->query("SELECT count(id) FROM sessao");
+                $linhas = $r->fetchAll(PDO::FETCH_ASSOC);
+                foreach($linhas as $l) {$total = $l['count(id)'];}
+                $r = $db->query("SELECT count(id) FROM sessao WHERE realizada=0 AND cancelada=0");
+                $linhas = $r->fetchAll(PDO::FETCH_ASSOC);
+                foreach($linhas as $l) {$abertas = $l['count(id)'];}
+                $r = $db->query("SELECT count(id) FROM sessao WHERE realizada=1");
+                $linhas = $r->fetchAll(PDO::FETCH_ASSOC);
+                foreach($linhas as $l) {$realizadas = $l['count(id)'];}
+                $r = $db->query("SELECT count(id) FROM sessao WHERE cancelada=1");
+                $linhas = $r->fetchAll(PDO::FETCH_ASSOC);
+                foreach($linhas as $l) {$canceladas = $l['count(id)'];}
+                echo "<p><span class='badge badge-pill badge-secondary'>".$total." total</span><br><span class='badge badge-pill badge-primary'>".$abertas." abertas</span> <span class='badge badge-pill badge-success'>".$realizadas." realizadas</span> <span class='badge badge-pill badge-danger'>".$canceladas." canceladas</span></p>";
+            ?>
+            <br>
+
+            <h4><svg class="bi bi-briefcase" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M0 12.5A1.5 1.5 0 001.5 14h13a1.5 1.5 0 001.5-1.5v-6h-1v6a.5.5 0 01-.5.5h-13a.5.5 0 01-.5-.5v-6H0v6z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M0 4.5A1.5 1.5 0 011.5 3h13A1.5 1.5 0 0116 4.5v2.384l-7.614 2.03a1.5 1.5 0 01-.772 0L0 6.884V4.5zM1.5 4a.5.5 0 00-.5.5v1.616l6.871 1.832a.5.5 0 00.258 0L15 6.116V4.5a.5.5 0 00-.5-.5h-13zM5 2.5A1.5 1.5 0 016.5 1h3A1.5 1.5 0 0111 2.5V3h-1v-.5a.5.5 0 00-.5-.5h-3a.5.5 0 00-.5.5V3H5v-.5z" clip-rule="evenodd"/></svg> Fisioterapeutas</h4>
+            <?php
+                $r = $db->query("SELECT count(crefito) FROM fisioterapeuta");
+                $linhas = $r->fetchAll(PDO::FETCH_ASSOC);
+                foreach($linhas as $l) {$total = $l['count(crefito)'];}
+                echo "<p><span class='badge badge-pill badge-secondary'>".$total." total</span></p>";
+            ?>
+            <br>
+
+            <h4><svg class="bi bi-people" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zm-7.995-.944v-.002.002zM7.022 13h7.956a.274.274 0 00.014-.002l.008-.002c-.002-.264-.167-1.03-.76-1.72C13.688 10.629 12.718 10 11 10c-1.717 0-2.687.63-3.24 1.276-.593.69-.759 1.457-.76 1.72a1.05 1.05 0 00.022.004zm7.973.056v-.002.002zM11 7a2 2 0 100-4 2 2 0 000 4zm3-2a3 3 0 11-6 0 3 3 0 016 0zM6.936 9.28a5.88 5.88 0 00-1.23-.247A7.35 7.35 0 005 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 015 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816zM4.92 10c-1.668.02-2.615.64-3.16 1.276C1.163 11.97 1 12.739 1 13h3c0-1.045.323-2.086.92-3zM1.5 5.5a3 3 0 116 0 3 3 0 01-6 0zm3-2a2 2 0 100 4 2 2 0 000-4z" clip-rule="evenodd"/></svg> Pacientes</h4>
+            <?php
+                $r = $db->query("SELECT count(cpf) FROM paciente");
+                $linhas = $r->fetchAll(PDO::FETCH_ASSOC);
+                foreach($linhas as $l) {$total = $l['count(cpf)'];}
+                $r = $db->query("SELECT count(cpf) FROM paciente WHERE ativo=1");
+                $linhas = $r->fetchAll(PDO::FETCH_ASSOC);
+                foreach($linhas as $l) {$ativo = $l['count(cpf)'];}
+                $r = $db->query("SELECT count(cpf) FROM paciente WHERE ativo=0");
+                $linhas = $r->fetchAll(PDO::FETCH_ASSOC);
+                foreach($linhas as $l) {$inativo = $l['count(cpf)'];}
+                echo "<p><span class='badge badge-pill badge-secondary'>".$total." total</span><br><span class='badge badge-pill badge-primary'>".$ativo." ativos</span> <span class='badge badge-pill badge-danger'>".$inativo." inativos</span></p>";
+            ?>
         </div>
     </div>
 
