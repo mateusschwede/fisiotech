@@ -46,6 +46,14 @@
         $_SESSION['msgm'] = "<div class='alert alert-light alert-dismissible fade show' role='alert' id='msgSucesso'>Sessão cancelada!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
         header("location: pFisio.php");
     }
+
+    if(!empty($_POST['rId2'])) {
+        $r = $db->prepare("UPDATE sessao SET realizada=1 WHERE id=?");
+        $r->execute(array($_SESSION['id']));
+        unset($_SESSION['id']);
+        $_SESSION['msgm'] = "<div class='alert alert-light alert-dismissible fade show' role='alert' id='msgSucesso'>Sessão realizada!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+        header("location: pFisio.php");
+    }
 ?>
 
 <!DOCTYPE html>
@@ -87,7 +95,7 @@
             <form action="painelSessao.php?id2=<?=base64_encode($_SESSION['id'])?>" method="post">
                 <div class="form-group">
                     <label for="selectPacientes2">Paciente</label>
-                    <select class="form-control" id="selectPacientes2" name="cpf">
+                    <select class="form-control" id="selectPacientes2" required name="cpf">
                         <option value="<?=$cpf?>"><?=$nome?></option>
                         <?php
                             $r = $db->query("SELECT * FROM paciente WHERE ativo=1 ORDER BY nome");
@@ -133,6 +141,24 @@
                 <div class="modal-footer">
                     <form action="painelSessao.php" method="post">
                         <input type="hidden" name="rId" value="1">
+                        <button type="button" class="btn btn-link" id="btnRed" data-dismiss="modal">VOLTAR</button>
+                        <button type="submit" class="btn btn-link">CONFIRMAR</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modRealizar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel3">Realizar Sessão</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-footer">
+                    <form action="painelSessao.php" method="post">
+                        <input type="hidden" name="rId2" value="1">
                         <button type="button" class="btn btn-link" id="btnRed" data-dismiss="modal">VOLTAR</button>
                         <button type="submit" class="btn btn-link">CONFIRMAR</button>
                     </form>

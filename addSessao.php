@@ -60,7 +60,7 @@
             <form action="addSessao.php" method="post">
                 <div class="form-group">
                     <label for="selectPacientes">Paciente</label>
-                    <select class="form-control" id="selectPacientes" name="cpf">
+                    <select class="form-control" id="selectPacientes" required name="cpf">
                         <?php
                             $r = $db->query("SELECT * FROM paciente WHERE ativo=1 ORDER BY nome");
                             $linhas = $r->fetchAll(PDO::FETCH_ASSOC);
