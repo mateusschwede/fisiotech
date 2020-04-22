@@ -53,7 +53,7 @@
                         foreach($linhas2 as $l2) {$nome = $l2['nome'];}
                             echo "
                                 <a href='painelSessao.php?id=".base64_encode($l['id'])."' class='list-group-item list-group-item-action d-flex justify-content-between align-items-center'>
-                                <strong>".$l['dia']." ".$l['horario'].":00 ".$l['descricao']."</strong>".$l['cpf']." - ".$nome." <span class='badge badge-secondary'>Cod ".$l['id']."</span>
+                                <strong>".$l['dia']." ".$l['horario'].":00 ".$l['descricao']."</strong>".$l['cpf']." - ".$nome." Valor: R$ ".number_format($l['valor'],2,",","")." <span class='badge badge-secondary'>Cod ".$l['id']."</span>
                                 </a>
                             ";
                     }

@@ -199,15 +199,15 @@
                         if(empty($_POST['cancelada'])) {$cancelada = 0;}
                         else {$cancelada = $_POST['cancelada'];}
                         
-                        $r = $db->prepare("SELECT * FROM sessao WHERE dia=? AND crefito=? AND (realizada=? OR cancelada=?) ORDER BY horario");
+                        $r = $db->prepare("SELECT * FROM sessao WHERE dia=? AND crefito=? AND realizada=? AND cancelada=? ORDER BY horario");
                         $r->execute(array($dia,$crefito,$realizada,$cancelada));
                         $linhas = $r->fetchAll(PDO::FETCH_ASSOC);
                         
                         echo "<h3>Crefito ".$crefito.", ".$dia."</h3>";
                         foreach($linhas as $l) {
-                            if($l['cancelada']==1) {echo "<li class='list-group-item' style='color: red;'><strong>".$l['horario'].":00 ".$l['descricao']."</strong> Cpf: ".$l['cpf']." <span class='badge badge-secondary'>Cod ".$l['id']."</span></li>";}
-                            elseif($l['realizada']==1) {echo "<li class='list-group-item' style='color: green;'><strong>".$l['horario'].":00 ".$l['descricao']."</strong> Cpf: ".$l['cpf']." <span class='badge badge-secondary'>Cod ".$l['id']."</span></li>";}
-                            else {echo "<li class='list-group-item'><strong>".$l['horario'].":00 ".$l['descricao']."</strong> Cpf: ".$l['cpf']." <span class='badge badge-secondary'>Cod ".$l['id']."</span></li>";}
+                            if($l['cancelada']==1) {echo "<li class='list-group-item' style='color: red;'><strong>".$l['horario'].":00 ".$l['descricao']."</strong> Cpf: ".$l['cpf']." Valor: R$ ".number_format($l['valor'],2,",","")." <span class='badge badge-secondary'>Cod ".$l['id']."</span></li>";}
+                            elseif($l['realizada']==1) {echo "<li class='list-group-item' style='color: green;'><strong>".$l['horario'].":00 ".$l['descricao']."</strong> Cpf: ".$l['cpf']." Valor: R$ ".number_format($l['valor'],2,",","")." <span class='badge badge-secondary'>Cod ".$l['id']."</span></li>";}
+                            else {echo "<li class='list-group-item'><strong>".$l['horario'].":00 ".$l['descricao']."</strong> Cpf: ".$l['cpf']." Valor: R$ ".number_format($l['valor'],2,",","")." <span class='badge badge-secondary'>Cod ".$l['id']."</span></li>";}
                         }
                     }
 
@@ -220,15 +220,15 @@
                         if(empty($_POST['cancelada2'])) {$cancelada = 0;}
                         else {$cancelada = $_POST['cancelada2'];}
 
-                        $r = $db->prepare("SELECT * FROM sessao WHERE dia=? AND cpf=? AND (realizada=? OR cancelada=?) ORDER BY horario");
+                        $r = $db->prepare("SELECT * FROM sessao WHERE dia=? AND cpf=? AND realizada=? AND cancelada=? ORDER BY horario");
                         $r->execute(array($dia,$cpf,$realizada,$cancelada));
                         $linhas = $r->fetchAll(PDO::FETCH_ASSOC);
 
                         echo "<h3>Cpf ".$cpf.", ".$dia."</h3>";
                         foreach($linhas as $l) {
-                            if($l['cancelada']==1) {echo "<li class='list-group-item' style='color: red;'><strong>".$l['horario'].":00 ".$l['descricao']."</strong> Crefito: ".$l['crefito']." <span class='badge badge-secondary'>Cod ".$l['id']."</span></li>";}
-                            elseif($l['realizada']==1) {echo "<li class='list-group-item' style='color: green;'><strong>".$l['horario'].":00 ".$l['descricao']."</strong> Crefito: ".$l['crefito']." <span class='badge badge-secondary'>Cod ".$l['id']."</span></li>";}
-                            else {echo "<li class='list-group-item'><strong>".$l['horario'].":00 ".$l['descricao']."</strong> Crefito: ".$l['crefito']." <span class='badge badge-secondary'>Cod ".$l['id']."</span></li>";}
+                            if($l['cancelada']==1) {echo "<li class='list-group-item' style='color: red;'><strong>".$l['horario'].":00 ".$l['descricao']."</strong> Crefito: ".$l['crefito']." Valor: R$ ".number_format($l['valor'],2,",","")." <span class='badge badge-secondary'>Cod ".$l['id']."</span></li>";}
+                            elseif($l['realizada']==1) {echo "<li class='list-group-item' style='color: green;'><strong>".$l['horario'].":00 ".$l['descricao']."</strong> Crefito: ".$l['crefito']." Valor: R$ ".number_format($l['valor'],2,",","")." <span class='badge badge-secondary'>Cod ".$l['id']."</span></li>";}
+                            else {echo "<li class='list-group-item'><strong>".$l['horario'].":00 ".$l['descricao']."</strong> Crefito: ".$l['crefito']." Valor: R$ ".number_format($l['valor'],2,",","")." <span class='badge badge-secondary'>Cod ".$l['id']."</span></li>";}
                         }
                     }
 
@@ -240,15 +240,15 @@
                         if(empty($_POST['cancelada3'])) {$cancelada = 0;}
                         else {$cancelada = $_POST['cancelada3'];}
 
-                        $r = $db->prepare("SELECT * FROM sessao WHERE crefito=? AND (realizada=? OR cancelada=?) ORDER BY dia,horario");
+                        $r = $db->prepare("SELECT * FROM sessao WHERE crefito=? AND realizada=? AND cancelada=? ORDER BY dia,horario");
                         $r->execute(array($crefito,$realizada,$cancelada));
                         $linhas = $r->fetchAll(PDO::FETCH_ASSOC);
 
                         echo "<h3>Crefito ".$crefito."</h3>";
                         foreach($linhas as $l) {
-                            if($l['cancelada']==1) {echo "<li class='list-group-item' style='color: red;'><strong>".$l['dia']." ".$l['horario'].":00 ".$l['descricao']."</strong> Cpf: ".$l['cpf']." <span class='badge badge-secondary'>Cod ".$l['id']."</span></li>";}
-                            elseif($l['realizada']==1) {echo "<li class='list-group-item' style='color: green;'><strong>".$l['dia']." ".$l['horario'].":00 ".$l['descricao']."</strong> Cpf: ".$l['cpf']." <span class='badge badge-secondary'>Cod ".$l['id']."</span></li>";}
-                            else {echo "<li class='list-group-item'><strong>".$l['dia']." ".$l['horario'].":00 ".$l['descricao']."</strong> Cpf: ".$l['cpf']." <span class='badge badge-secondary'>Cod ".$l['id']."</span></li>";}
+                            if($l['cancelada']==1) {echo "<li class='list-group-item' style='color: red;'><strong>".$l['dia']." ".$l['horario'].":00 ".$l['descricao']."</strong> Cpf: ".$l['cpf']." Valor: R$ ".number_format($l['valor'],2,",","")." <span class='badge badge-secondary'>Cod ".$l['id']."</span></li>";}
+                            elseif($l['realizada']==1) {echo "<li class='list-group-item' style='color: green;'><strong>".$l['dia']." ".$l['horario'].":00 ".$l['descricao']."</strong> Cpf: ".$l['cpf']." Valor: R$ ".number_format($l['valor'],2,",","")." <span class='badge badge-secondary'>Cod ".$l['id']."</span></li>";}
+                            else {echo "<li class='list-group-item'><strong>".$l['dia']." ".$l['horario'].":00 ".$l['descricao']."</strong> Cpf: ".$l['cpf']." Valor: R$ ".number_format($l['valor'],2,",","")." <span class='badge badge-secondary'>Cod ".$l['id']."</span></li>";}
                         }
                     }
 
@@ -260,15 +260,15 @@
                         if(empty($_POST['cancelada4'])) {$cancelada = 0;}
                         else {$cancelada = $_POST['cancelada4'];}
 
-                        $r = $db->prepare("SELECT * FROM sessao WHERE cpf=? AND (realizada=? OR cancelada=?) ORDER BY dia,horario");
+                        $r = $db->prepare("SELECT * FROM sessao WHERE cpf=? AND realizada=? AND cancelada=? ORDER BY dia,horario");
                         $r->execute(array($cpf,$realizada,$cancelada));
                         $linhas = $r->fetchAll(PDO::FETCH_ASSOC);
 
                         echo "<h3>Cpf ".$l['cpf']."</h3>";
                         foreach($linhas as $l) {
-                            if($l['cancelada']==1) {echo "<li class='list-group-item' style='color: red;'><strong>".$l['dia']." ".$l['horario'].":00 ".$l['descricao']."</strong> Crefito: ".$l['crefito']." <span class='badge badge-secondary'>Cod ".$l['id']."</span></li>";}
-                            elseif($l['realizada']==1) {echo "<li class='list-group-item' style='color: green;'><strong>".$l['dia']." ".$l['horario'].":00 ".$l['descricao']."</strong> Crefito: ".$l['crefito']." <span class='badge badge-secondary'>Cod ".$l['id']."</span></li>";}
-                            else {echo "<li class='list-group-item'><strong>".$l['dia']." ".$l['horario'].":00 ".$l['descricao']."</strong> Crefito: ".$l['crefito']." <span class='badge badge-secondary'>Cod ".$l['id']."</span></li>";}
+                            if($l['cancelada']==1) {echo "<li class='list-group-item' style='color: red;'><strong>".$l['dia']." ".$l['horario'].":00 ".$l['descricao']."</strong> Crefito: ".$l['crefito']." Valor: R$ ".number_format($l['valor'],2,",","")." <span class='badge badge-secondary'>Cod ".$l['id']."</span></li>";}
+                            elseif($l['realizada']==1) {echo "<li class='list-group-item' style='color: green;'><strong>".$l['dia']." ".$l['horario'].":00 ".$l['descricao']."</strong> Crefito: ".$l['crefito']." Valor: R$ ".number_format($l['valor'],2,",","")." <span class='badge badge-secondary'>Cod ".$l['id']."</span></li>";}
+                            else {echo "<li class='list-group-item'><strong>".$l['dia']." ".$l['horario'].":00 ".$l['descricao']."</strong> Crefito: ".$l['crefito']." Valor: R$ ".number_format($l['valor'],2,",","")." <span class='badge badge-secondary'>Cod ".$l['id']."</span></li>";}
                         }
                     }
                 ?>
