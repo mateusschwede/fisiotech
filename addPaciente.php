@@ -60,7 +60,7 @@
                     <input type="number" class="form-control" min=1 max=99999999999 required name="cpf" placeholder="Cpf">
                 </div>
                 <div class="form-group">
-                    <input type="name" class="form-control" maxlength="70" required name="nome" placeholder="Nome">
+                    <input type="text" class="form-control" maxlength="70" required name="nome" placeholder="Nome">
                 </div>
                 <button type="button" class="btn btn-link" id="btnRed" onclick="window.location.href='fisioPacientes.php'">CANCELAR</button>
                 <button type="submit" class="btn btn-link">ADICIONAR</button>
