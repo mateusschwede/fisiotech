@@ -39,11 +39,11 @@
         }
     }
     
-    if(!empty($_POST['rCpf'])) {
-        $r = $db->prepare("UPDATE paciente SET ativo=0 WHERE cpf=?");
-        $r->execute(array($_SESSION['cpf']));
-        unset($_SESSION['cpf']);
-        $_SESSION['msgm'] = "<div class='alert alert-light alert-dismissible fade show' role='alert' id='msgSucesso'>Sessão atualizada!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+    if(!empty($_POST['rId'])) {
+        $r = $db->prepare("UPDATE sessao SET cancelada=1 WHERE id=?");
+        $r->execute(array($_SESSION['id']));
+        unset($_SESSION['id']);
+        $_SESSION['msgm'] = "<div class='alert alert-light alert-dismissible fade show' role='alert' id='msgSucesso'>Sessão cancelada!<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
         header("location: pFisio.php");
     }
 ?>
@@ -132,7 +132,7 @@
                 </div>
                 <div class="modal-footer">
                     <form action="painelSessao.php" method="post">
-                        <input type="hidden" name="rCpf" value="1">
+                        <input type="hidden" name="rId" value="1">
                         <button type="button" class="btn btn-link" id="btnRed" data-dismiss="modal">VOLTAR</button>
                         <button type="submit" class="btn btn-link">CONFIRMAR</button>
                     </form>
