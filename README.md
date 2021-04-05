@@ -1,3 +1,4 @@
+![Logotipo](https://img.icons8.com/ios-glyphs/80/000000/gymnastics.png)
 # Fisiotech
 Software de gestão de consultório de fisioterapia
 
